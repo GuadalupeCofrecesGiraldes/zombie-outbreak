@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private float jumpHeight = 0.5f;
+    [SerializeField] private float speed = 0.2f;
+    [SerializeField] private float jumpHeight = 0.02f;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private bool shouldFaceMoveDirection = false;
 
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        Vector3 moveDirection = forward * moveInput.y + right * moveInput.y;
+        Vector3 moveDirection = forward * moveInput.y + right * moveInput.x;
         controller.Move(moveDirection * speed);
 
         if(shouldFaceMoveDirection && moveDirection.sqrMagnitude > 0.001f)
