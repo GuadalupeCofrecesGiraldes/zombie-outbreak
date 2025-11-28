@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private int maxAmmo = 30;
     [SerializeField] private GameObject hitEffectPrefab;
     [SerializeField] private LayerMask whatToHit;
+
+    [Header("UI Feedback")]
+    [SerializeField] private Image crosshairImage;
 
     private Camera playerCamera;
     private int currentAmmo;
@@ -88,5 +92,35 @@ public class Weapon : MonoBehaviour
         {
             UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
         }
+    }
+
+    void UpdateCrosshair()
+    {
+        if (crosshairImage == null) return;
+
+        RaycastHit hit;
+        Vector3 origin = playerCamera.transform.position;
+        Vector3 direction = playerCamera.transform.forward;
+
+        if (Physics.Raycast(origin, direction, out hit, range))
+        {
+            if (hit.transform.GetComponent<Health>() != null)
+            {
+                crosshairImage.color = Color.red;
+            }
+            else
+            {
+                crosshairImage.color = Color.white;
+            }
+        }
+        else
+        {
+            crosshairImage.color = Color.white;
+        }
+    }
+
+    void Update()
+    {
+        UpdateCrosshair();
     }
 }
