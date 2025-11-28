@@ -52,4 +52,21 @@ public class Health : MonoBehaviour
 
         Destroy(gameObject, 1f);
     }
+
+    public void Heal(int amount)
+    {
+        if (currentHealth <= 0) return;
+
+        currentHealth += amount;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHealthCounter(currentHealth);
+        }
+    }
 }
