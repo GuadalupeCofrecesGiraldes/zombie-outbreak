@@ -13,10 +13,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 velocity;
 
+    private Animator animator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -51,7 +55,19 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = forward * moveInput.y + right * moveInput.x;
         controller.Move(moveDirection * speed);
 
-        if(shouldFaceMoveDirection && moveDirection.sqrMagnitude > 0.001f)
+        float currentSpeed = moveDirection.magnitude * speed;
+
+        if (moveDirection.sqrMagnitude > 0)
+        {
+            Debug.Log(currentSpeed);
+            animator.SetFloat("Speed", currentSpeed);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0f);
+        }
+
+        if (shouldFaceMoveDirection && moveDirection.sqrMagnitude > 0.001f)
         {
             Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 10f * Time.deltaTime);

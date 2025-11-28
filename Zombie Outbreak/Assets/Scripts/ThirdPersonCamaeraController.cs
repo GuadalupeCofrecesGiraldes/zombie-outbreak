@@ -6,8 +6,8 @@ public class ThirdPersonCamaeraController : MonoBehaviour
 {
     [SerializeField] private float zoomSpeed = 2f;
     [SerializeField] private float zoomLerpSpeed = 10f;
-    [SerializeField] private float minDistance = 3f;
-    [SerializeField] private float maxDistance = 15f;
+    [SerializeField] private float minDistance = 1f;
+    [SerializeField] private float maxDistance = 13f;
 
     private InputSystem_Actions controls;
     private CinemachineCamera cam;
