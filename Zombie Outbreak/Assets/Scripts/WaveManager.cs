@@ -19,6 +19,19 @@ public class EnemyGroup
     public int count;              
 }
 
+[System.Serializable]
+public class PickupSpawnData
+{
+    public GameObject medkitPrefab;
+    public GameObject ammoPrefab;
+
+    [Range(0, 1)] public float medkitChance = 0.3f; 
+    public int maxMedkits = 2;                     
+
+    [Range(0, 1)] public float ammoChance = 0.5f;
+    public int maxAmmoPacks = 4;
+}
+
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
@@ -31,7 +44,10 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private List<Wave> waves;
 
     [Header("Spawn Points")]
-    [SerializeField] private Transform[] spawnPoints; 
+    [SerializeField] private Transform[] spawnPoints;
+
+    [Header("Pickups")]
+    [SerializeField] private PickupSpawnData pickupData;
 
     private int currentWaveIndex = 0;
     private float waveCountdown;
@@ -98,6 +114,7 @@ public class WaveManager : MonoBehaviour
         {
             Debug.Log("Iniciando Oleada " + waves[currentWaveIndex].waveName);
             StartCoroutine(SpawnWaveEnemies(waves[currentWaveIndex]));
+            SpawnPickups();
 
             float duration = waves[currentWaveIndex].timeUntilNextWave;
 
@@ -134,5 +151,34 @@ public class WaveManager : MonoBehaviour
     {
         Debug.Log("¡Tiempo terminado! Fin del Juego.");
         this.enabled = false;
+    }
+
+    private void SpawnPickups()
+    {
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("No hay puntos de spawn para los pickups.");
+            return;
+        }
+
+        for (int i = 0; i < pickupData.maxMedkits; i++)
+        {
+            if (Random.value < pickupData.medkitChance)
+            {
+                Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+                Instantiate(pickupData.medkitPrefab, spawnPoint.position, Quaternion.identity);
+                Debug.Log("Spawned Medkit.");
+            }
+        }
+
+        for (int i = 0; i < pickupData.maxAmmoPacks; i++)
+        {
+            if (Random.value < pickupData.ammoChance)
+            {
+                Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+                Instantiate(pickupData.ammoPrefab, spawnPoint.position, Quaternion.identity);
+                Debug.Log("Spawned Ammo.");
+            }
+        }
     }
 }
