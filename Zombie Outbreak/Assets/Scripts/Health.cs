@@ -11,6 +11,11 @@ public class Health : MonoBehaviour
     {
         currentHealth = maxHealth;
         zombieAI = GetComponent<ZombieAi>();
+
+        if(UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHealthCounter(currentHealth);
+        }
     }
 
     public void TakeDamage(int damageAmount)
@@ -18,7 +23,18 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0) return;
 
         Debug.Log($"Current health: {currentHealth}");
-        currentHealth -= damageAmount;
+        if(damageAmount >= currentHealth)
+        {
+            currentHealth = 0;
+        } else
+        {
+            currentHealth -= damageAmount;
+        }
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHealthCounter(currentHealth);
+        }
 
         if (currentHealth <= 0)
         {
@@ -28,11 +44,12 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        if (zombieAI != null)
+        if (zombieAI != null && ScoreManager.Instance != null)
         {
+            ScoreManager.Instance.AddScore(10);
             zombieAI.DieLogic();
         }
 
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 1f);
     }
 }
