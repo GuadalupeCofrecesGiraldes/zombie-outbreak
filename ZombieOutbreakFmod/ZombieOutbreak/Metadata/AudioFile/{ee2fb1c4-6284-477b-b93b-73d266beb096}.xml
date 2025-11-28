@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{ee2fb1c4-6284-477b-b93b-73d266beb096}">
+		<property name="assetPath">
+			<value>Ambience/City/ambience_city_traffic_siren.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>8</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{72b56ab0-a3b9-4860-8dd5-ff69a2709cdc}</destination>
+		</relationship>
+	</object>
+</objects>

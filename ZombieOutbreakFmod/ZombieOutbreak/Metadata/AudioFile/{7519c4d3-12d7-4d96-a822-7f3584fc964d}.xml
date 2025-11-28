@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{7519c4d3-12d7-4d96-a822-7f3584fc964d}">
+		<property name="assetPath">
+			<value>Ambience/Forest/amb_forest_wind.ogg</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>12</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{72b56ab0-a3b9-4860-8dd5-ff69a2709cdc}</destination>
+		</relationship>
+	</object>
+</objects>

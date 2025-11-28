@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{8b09de8b-7972-4b9a-b851-9fa1b7b7b7bb}">
+		<property name="assetPath">
+			<value>Weapons/M4/weapons_m4_head_01.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.033937500000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{72b56ab0-a3b9-4860-8dd5-ff69a2709cdc}</destination>
+		</relationship>
+	</object>
+</objects>

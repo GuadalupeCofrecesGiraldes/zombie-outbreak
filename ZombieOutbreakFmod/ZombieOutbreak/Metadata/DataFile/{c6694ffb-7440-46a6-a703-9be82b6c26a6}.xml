@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{c6694ffb-7440-46a6-a703-9be82b6c26a6}">
+		<property name="assetPath">
+			<value>Haptics/shotgun_m1014_prime_out.haptic</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{72b56ab0-a3b9-4860-8dd5-ff69a2709cdc}</destination>
+		</relationship>
+	</object>
+</objects>
