@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Wave
@@ -49,6 +50,9 @@ public class WaveManager : MonoBehaviour
     [Header("Pickups")]
     [SerializeField] private PickupSpawnData pickupData;
 
+    [Header("References")]
+    [SerializeField] private Health playerHealthComponent;
+
     private int currentWaveIndex = 0;
     private float waveCountdown;
     private float gameTimer;
@@ -74,13 +78,28 @@ public class WaveManager : MonoBehaviour
             isWaveActive = true;
             StartNextWave();
         }
+
+        if (playerHealthComponent == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                playerHealthComponent = playerObj.GetComponent<Health>();
+            }
+        }
     }
 
     void Update()
     {
+        if (playerHealthComponent != null && playerHealthComponent.IsDead())
+        {
+            EndGame(false);
+            return;
+        }
+
         if (gameTimer <= 0)
         {
-            EndGame();
+            EndGame(currentWaveIndex >= waves.Count);
             return;
         }
 
@@ -147,10 +166,21 @@ public class WaveManager : MonoBehaviour
 
     }
 
-    private void EndGame()
+    private void EndGame(bool victory)
     {
-        Debug.Log("¡Tiempo terminado! Fin del Juego.");
+
         this.enabled = false;
+
+        int finalScore = 0;
+        if (ScoreManager.Instance != null)
+        {
+            finalScore = ScoreManager.Instance.GetScore();
+        }
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowEndScreen(victory, finalScore);
+        }
     }
 
     private void SpawnPickups()

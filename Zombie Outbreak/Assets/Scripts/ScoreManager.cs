@@ -18,6 +18,11 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    public int GetScore()
+    {
+        return score;
+    }
+
     public void AddScore(int points)
     {
         score += points;

@@ -69,4 +69,9 @@ public class Health : MonoBehaviour
             UIManager.Instance.UpdateHealthCounter(currentHealth);
         }
     }
+
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
 }
