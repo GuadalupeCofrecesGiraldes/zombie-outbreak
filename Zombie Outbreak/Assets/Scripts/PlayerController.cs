@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight = 0.02f;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private bool shouldFaceMoveDirection = false;
+    [SerializeField] private Weapon currentWeapon;
 
     private CharacterController controller;
     private Vector2 moveInput;
@@ -37,6 +38,19 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("We are supposed to jump");
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("Pressing to shoot");
+            if (currentWeapon != null)
+            {
+                Debug.Log("Try to shoot");
+                currentWeapon.TryShoot();
+            }
         }
     }
 

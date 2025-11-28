@@ -2,47 +2,66 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [Header("Estadísticas del Arma")]
+    [Header("Stats")]
     [SerializeField] private float damage = 25f;
     [SerializeField] private float range = 50f;
-    [SerializeField] private int maxAmmo = 30;
-    private int currentAmmo;
-
     [SerializeField] private float fireRate = 0.5f;
+    [SerializeField] private int maxAmmo = 30;
+    [SerializeField] private GameObject hitEffectPrefab;
+    [SerializeField] private LayerMask whatToHit;
+
+    private Camera playerCamera;
+    private int currentAmmo;
     private float nextTimeToFire = 0f;
 
     void Start()
     {
+        playerCamera = Camera.main;
         currentAmmo = maxAmmo;
-         UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
-    }
-
-    void Update()
-    {
-        // Ejemplo de detección de disparo (debería estar en un PlayerInput Manager)
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+        if (UIManager.Instance != null)
         {
-            Shoot();
+            UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
         }
     }
 
-    void Shoot()
+    public bool TryShoot()
     {
+        if (Time.time < nextTimeToFire)
+        {
+            return false;
+        }
+
         if (currentAmmo <= 0)
         {
-            return;
+            Debug.Log("Click! Sin munición.");
+            return false;
         }
 
         nextTimeToFire = Time.time + fireRate;
         currentAmmo--;
 
-        UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        if (UIManager.Instance != null)
         {
-            Debug.Log("Hit: " + hit.transform.name);
+            UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
+        }
+        Debug.Log("Going to shoot");
+        CastRayForDamage();
 
+        return true;
+    }
+
+    private void CastRayForDamage()
+    {
+        if (playerCamera == null) return;
+
+        Debug.Log("Shooting");
+        RaycastHit hit;
+
+        Vector3 origin = playerCamera.transform.position;
+        Vector3 direction = playerCamera.transform.forward;
+
+        if (Physics.Raycast(origin, direction, out hit, range, whatToHit))
+        {
             Health targetHealth = hit.transform.GetComponent<Health>();
 
             if (targetHealth != null)
@@ -50,8 +69,14 @@ public class Weapon : MonoBehaviour
                 targetHealth.TakeDamage((int)damage);
             }
 
+            if (hitEffectPrefab != null)
+            {
+                GameObject impact = Instantiate(hitEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impact, 2f);
+            }
         }
     }
+
     public void Reload(int amount)
     {
         currentAmmo += amount;
@@ -59,6 +84,9 @@ public class Weapon : MonoBehaviour
         {
             currentAmmo = maxAmmo;
         }
-         UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateAmmoCounter(currentAmmo, maxAmmo);
+        }
     }
 }
